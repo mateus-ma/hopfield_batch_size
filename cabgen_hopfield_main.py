@@ -3,6 +3,7 @@ import argparse
 import numpy as np
 from os import path
 from deeprc.training import train, evaluate
+from src.utils.create_orf_table import create_orf_table
 from deeprc.task_definitions import TaskDefinition, MulticlassTarget
 from deeprc.dataset_readers import make_dataloaders, no_sequence_count_scaling
 from deeprc.architectures import DeepRC, SequenceEmbeddingCNN, \
@@ -45,7 +46,14 @@ parser.add_argument("--rnd_seed", help=(
     "non-deterministic due to multiprocessing but weight initialization will "
     "be the same). Default: 0."),
     type=int, default=0)
+parser.add_argument("--create_orfs", help=("Create ORFs from JSONs in jsons "
+                                           "directory."),
+                    type=str, default="False")
 args = parser.parse_args()
+
+if args.create_orfs == "True" or args.create_orfs == "true":
+    create_orf_table()
+
 # Set computation device
 device = torch.device(args.device)
 # Set random seed (Weight initialization will be the same)
