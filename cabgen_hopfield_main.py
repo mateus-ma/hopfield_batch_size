@@ -51,7 +51,7 @@ parser.add_argument("--create_orfs", help=("Create ORFs from JSONs in jsons "
                     type=str, default="False")
 args = parser.parse_args()
 
-if args.create_orfs == "True" or args.create_orfs == "true":
+if args.create_orfs.title() == "True":
     create_orf_table()
 
 # Set computation device
@@ -118,7 +118,7 @@ output_network = OutputNetwork(
     n_output_features=task_definition.get_n_output_features(),
     n_layers=1, n_units=32)
 # Combine networks to DeepRC network
-model = DeepRC(max_seq_len=30,
+model = DeepRC(max_seq_len=13100,
                sequence_embedding_network=sequence_embedding_network,
                attention_network=attention_network,
                output_network=output_network,
