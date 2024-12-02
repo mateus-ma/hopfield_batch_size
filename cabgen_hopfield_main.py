@@ -1,7 +1,7 @@
 import torch
 import argparse
 import numpy as np
-from os import path
+from os import path, environ
 from deeprc.training import train, evaluate
 from src.utils.create_orf_table import create_orf_table
 from deeprc.task_definitions import TaskDefinition, MulticlassTarget
@@ -9,6 +9,8 @@ from deeprc.dataset_readers import make_dataloaders, no_sequence_count_scaling
 from deeprc.architectures import DeepRC, SequenceEmbeddingCNN, \
     AttentionNetwork, OutputNetwork
 
+environ["PYTORCH_CUDA_ALLOC_CONF"] = ("garbage_collection_threshold:0.8,"
+                                      "max_split_size_mb:128")
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--n_updates", help=(
