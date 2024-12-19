@@ -21,9 +21,8 @@ def read_json(json_path: str):
         raise Exception(f"Can't read json file...\n{error}")
 
 
-def write_table(table_name: str, 
-                data: Union[List[List[Union[str, int]]],
-                            pd.DataFrame]) -> None:
+def write_table(table_name: str, data: Union[List[List[Union[str, int]]],
+                                             pd.DataFrame]) -> None:
 
     if isinstance(data, pd.DataFrame):
         df = data
