@@ -21,10 +21,10 @@ parser.add_argument(
     type=str, required=True)
 parser.add_argument(
     "--metadata_file", help="Path to the metadata table (TSV).", type=str,
-    required=True)
+    default="test/metadata.tsv")
 parser.add_argument(
     "--orfs_path", help="Path to the folder with ORFs.", type=str,
-    required=True)
+    default="test/orfs")
 args = parser.parse_args()
 
 device = torch.device(args.device if torch.cuda.is_available() else "cpu")
