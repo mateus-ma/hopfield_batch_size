@@ -5,7 +5,8 @@ from os import path, environ
 from deeprc.training import train, evaluate
 from src.utils.create_orf_table import create_orf_table
 from deeprc.task_definitions import TaskDefinition, MulticlassTarget
-from deeprc.dataset_readers import make_dataloaders, no_sequence_count_scaling
+from deeprc.dataset_readers import make_dataloaders_stratified, \
+    no_sequence_count_scaling
 from deeprc.architectures import DeepRC, SequenceEmbeddingCNN, \
     AttentionNetwork, OutputNetwork
 
@@ -91,10 +92,13 @@ task_definition = TaskDefinition(targets=[  # Combines our sub-tasks
 # Get data loaders for training set and training-, validation-,
 # and test-set in evaluation mode (=no random subsampling)
 trainingset, trainingset_eval, \
-    validationset_eval, testset_eval = make_dataloaders(
+    validationset_eval, testset_eval = make_dataloaders_stratified(
         task_definition=task_definition,
         metadata_file=path.abspath("database/metadata.tsv"),
         repertoiresdata_path=path.abspath("database/orfs"),
+        n_splits=5,
+        stratify=True,
+        rnd_seed=args.rnd_seed,
         metadata_file_id_column="ID",
         sequence_column="orf",
         sequence_counts_column="templates",
