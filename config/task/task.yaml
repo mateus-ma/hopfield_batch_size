@@ -1,0 +1,6 @@
+targets:
+  - type: multiclass
+    column_name: "MEM"
+    possible_target_values: ["R", "I", "S"]
+    class_weights: [1.0, 1.0, 1.0]
+    task_weight: 1.0

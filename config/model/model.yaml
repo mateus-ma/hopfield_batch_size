@@ -1,0 +1,8 @@
+kernel_size: 9
+n_kernels: 32
+sequence_embedding:
+  n_layers: 1
+attention:
+  n_layers: 2
+output:
+  n_layers: 1

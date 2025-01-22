@@ -1,0 +1,5 @@
+stratify: True
+metadata_file_id_column: "ID"
+sequence_column: "orf"
+sequence_counts_column: "templates"
+sample_n_sequences: 10000

@@ -1,0 +1,14 @@
+defaults:
+  - task: task
+  - data_splitting: data_splitting
+  - model: model
+  - training: training
+  - _self_
+
+device: "cuda:0"
+rnd_seed: 0
+create_orfs: False
+results_directory: "results"
+database:
+  metadata_file: "database/metadata.tsv"
+  repertoiresdata_path: "database/orfs"

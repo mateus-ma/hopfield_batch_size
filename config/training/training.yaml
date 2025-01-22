@@ -1,0 +1,3 @@
+n_updates: 1000
+evaluate_at: 100
+learning_rate: 0.0001
