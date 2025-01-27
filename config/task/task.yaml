@@ -1,6 +1,6 @@
 targets:
-  - type: multiclass
+  - type: binary
     column_name: "MEM"
-    possible_target_values: ["R", "I", "S"]
-    class_weights: [1.0, 1.0, 1.0]
-    task_weight: 1.0
+    positive_class: "R"
+    pos_weight: 1
+    task_weight: 1

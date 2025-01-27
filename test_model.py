@@ -36,6 +36,10 @@ def test_model(cfg: DictConfig):
     # Output config
     output_layers = cfg.model.output.n_layers
 
+    multiclass_targets = cfg.task.targets[0].get("possible_target_values")
+    binary_targets = cfg.task.targets[0].get("positive_class")
+    n_output_features = len(multiclass_targets) \
+        if multiclass_targets is not None else len(binary_targets)
     print(f"Using device: {device}")
 
     print("Reconstructing the model architecture...")
@@ -47,7 +51,7 @@ def test_model(cfg: DictConfig):
         n_units=n_kernels)
     output_network = OutputNetwork(
         n_input_features=n_kernels,
-        n_output_features=len(cfg.task.targets[0].possible_target_values),
+        n_output_features=n_output_features,
         n_layers=output_layers, n_units=n_kernels)
 
     model = DeepRC(max_seq_len=13100,
