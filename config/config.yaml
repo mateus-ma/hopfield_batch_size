@@ -3,6 +3,7 @@ defaults:
   - data_splitting: data_splitting
   - model: model
   - training: training
+  - test: test
   - _self_
 
 device: "cuda:0"

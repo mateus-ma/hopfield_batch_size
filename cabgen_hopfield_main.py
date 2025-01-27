@@ -13,7 +13,8 @@ from deeprc.architectures import DeepRC, SequenceEmbeddingCNN, \
     AttentionNetwork, OutputNetwork
 
 environ["PYTORCH_CUDA_ALLOC_CONF"] = ("garbage_collection_threshold:0.8,"
-                                      "max_split_size_mb:128")
+                                      "max_split_size_mb:128,"
+                                      "expandable_segments:True")
 environ["HYDRA_FULL_ERROR"] = "1"
 
 
