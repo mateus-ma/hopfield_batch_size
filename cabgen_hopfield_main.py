@@ -43,7 +43,7 @@ def create_task_definition(task_config):
                 column_name=target["column_name"],
                 # Entries with value '+' will be positive class, others will
                 # be negative class
-                true_class_value=["positive_class"],
+                true_class_value=target["positive_class"],
                 # We can up- or down-weight the positive class if the classes
                 # are imbalanced
                 pos_weight=target["pos_weight"],
