@@ -1,4 +1,5 @@
 import pandas as pd
+from datetime import datetime
 from collections import Counter
 import src.utils.handle_files as hf
 from torch.utils.data import DataLoader
@@ -127,3 +128,12 @@ def make_full_dataloader(
         return full_dataloader
     except Exception as error:
         raise ValueError(f"Can't return data...\n{error}")
+
+
+def get_datetime() -> str:
+    return datetime.now().strftime("%Y_%m_%d_%H_%M")
+
+
+def insert_datetime_into_filename(filename: str) -> str:
+    return (f"{filename.split('.')[0]}_{get_datetime()}."
+            f"{filename.split('.')[-1]}")
