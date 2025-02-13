@@ -4,5 +4,7 @@ sequence_embedding:
   n_layers: 1
 attention:
   n_layers: 2
+  n_units: 32
 output:
   n_layers: 1
+  n_units: 32
