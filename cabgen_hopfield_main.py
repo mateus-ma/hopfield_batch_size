@@ -185,7 +185,7 @@ def main(cfg: DictConfig):
         n_output_features=task_definition.get_n_output_features(),
         n_layers=output_layers, n_units=output_units)
     # Combine networks to DeepRC network
-    model = DeepRC(max_seq_len=13100,
+    model = DeepRC(max_seq_len=13500,
                    sequence_embedding_network=sequence_embedding_network,
                    attention_network=attention_network,
                    output_network=output_network,
