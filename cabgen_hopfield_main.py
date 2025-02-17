@@ -121,7 +121,9 @@ def main(cfg: DictConfig):
     # Model
     cnn_layers = cfg.model.sequence_embedding.n_layers
     attention_layers = cfg.model.attention.n_layers
+    attention_units = cfg.model.attention.n_units
     output_layers = cfg.model.output.n_layers
+    output_units = cfg.model.output.n_units
 
     if create_orfs:
         create_orf_table()
@@ -176,14 +178,14 @@ def main(cfg: DictConfig):
     # Create attention network
     attention_network = AttentionNetwork(
         n_input_features=n_kernels, n_layers=attention_layers,
-        n_units=n_kernels)
+        n_units=attention_units)
     # Create output network
     output_network = OutputNetwork(
         n_input_features=n_kernels,
         n_output_features=task_definition.get_n_output_features(),
-        n_layers=output_layers, n_units=n_kernels)
+        n_layers=output_layers, n_units=output_units)
     # Combine networks to DeepRC network
-    model = DeepRC(max_seq_len=13100,
+    model = DeepRC(max_seq_len=13500,
                    sequence_embedding_network=sequence_embedding_network,
                    attention_network=attention_network,
                    output_network=output_network,
