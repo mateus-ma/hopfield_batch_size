@@ -49,9 +49,11 @@ As configurações do Hydra permitem gerenciar facilmente os parâmetros do trei
    - **`sequence_embedding`**:
      - **`n_layers`**: Número de camadas na CNN.  
    - **`attention`**:
-     - **`n_layers`**: Número de camadas na rede de atenção.  
+     - **`n_layers`**: Número de camadas na rede de atenção.
+     - **`n_units`**: Número de neurônios na rede de atenção.  
    - **`output`**:
      - **`n_layers`**: Número de camadas na rede de saída.
+     - **`n_units`**: Número de neurônios na rede de saída.
 
 4. **`task.yaml`**  
    Configuração das tarefas.
@@ -118,10 +120,10 @@ O script `test_model.py` avalia o modelo treinado em novos dados. Ele utiliza as
    python3 test_model.py
    ```
 
-2. Avaliar um modelo específico:
+2. Avaliar um modelo específico com kernel size de 48:
 
    ```bash
-   python3 test_model.py test.model_path="results/model_2050125/checkpoint/model.zip"
+   python3 test_model.py test.model_path="results/model_2050125/checkpoint/model.zip" model.kernel_size=48
    ```
 
 3. Alterar o metadata de teste:
