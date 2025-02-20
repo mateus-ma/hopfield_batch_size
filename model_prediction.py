@@ -31,7 +31,9 @@ def predict_samples(cfg: DictConfig):
     n_kernels = cfg.model.n_kernels
     cnn_layers = cfg.model.sequence_embedding.n_layers
     attention_layers = cfg.model.attention.n_layers
+    attention_units = cfg.model.attention.n_units
     output_layers = cfg.model.output.n_layers
+    output_units = cfg.model.output.n_units
     multiclass_targets = cfg.task.targets[0].get("possible_target_values")
     binary_targets = cfg.task.targets[0].get("positive_class")
     n_output_features = len(multiclass_targets) \
@@ -49,11 +51,11 @@ def predict_samples(cfg: DictConfig):
         n_kernels=n_kernels, n_layers=cnn_layers)
     attention_network = AttentionNetwork(
         n_input_features=n_kernels, n_layers=attention_layers,
-        n_units=n_kernels)
+        n_units=attention_units)
     output_network = OutputNetwork(
         n_input_features=n_kernels,
         n_output_features=n_output_features,
-        n_layers=output_layers, n_units=n_kernels)
+        n_layers=output_layers, n_units=output_units)
 
     model = DeepRC(
         max_seq_len=13100,

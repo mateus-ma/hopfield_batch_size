@@ -49,9 +49,11 @@ As configurações do Hydra permitem gerenciar facilmente os parâmetros do trei
    - **`sequence_embedding`**:
      - **`n_layers`**: Número de camadas na CNN.  
    - **`attention`**:
-     - **`n_layers`**: Número de camadas na rede de atenção.  
+     - **`n_layers`**: Número de camadas na rede de atenção.
+     - **`n_units`**: Número de neurônios na rede de atenção.  
    - **`output`**:
      - **`n_layers`**: Número de camadas na rede de saída.
+     - **`n_units`**: Número de neurônios na rede de saída.
 
 4. **`task.yaml`**  
    Configuração das tarefas.
@@ -118,16 +120,36 @@ O script `test_model.py` avalia o modelo treinado em novos dados. Ele utiliza as
    python3 test_model.py
    ```
 
-2. Avaliar um modelo específico:
+2. Avaliar um modelo específico com kernel size de 48:
 
    ```bash
-   python3 test_model.py test.model_path="results/model_2050125/checkpoint/model.zip"
+   python3 test_model.py test.model_path="results/model_2050125/checkpoint/model.zip" model.kernel_size=48
    ```
 
 3. Alterar o metadata de teste:
 
    ```bash
    python3 test_model.py test.metadata_file="new_metadata.tsv"
+   ```
+
+---
+
+## Predição do Conjunto de Teste
+
+### Script `model_prediction.py`
+
+O script `model_prediction.py` gera, por padrão, uma tabela com os valores de predição do modelo mais recente armazenado na pasta `results/`, utilizando os dados de teste. Se desejar utilizar um modelo específico, defina o caminho do arquivo no parâmetro `test.model_path`. Além disso, outros parâmetros podem ser ajustados conforme necessário, basta verificar quais são utilizados pelo script e sobrescrevê-los diretamente na linha de comando.
+
+1. Executar a predição utilizando o modelo mais recente:
+
+   ```bash
+   python3 model_prediction.py
+   ```
+
+2. Executar a predição utilizando um modelo específico e definir kernel_size como 48:
+
+   ```bash
+   python3 model_prediction.py test.model_path="results/model_2050125/checkpoint/model.zip" model.kernel_size=48 
    ```
 
 ---
