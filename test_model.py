@@ -32,9 +32,11 @@ def test_model(cfg: DictConfig):
 
     # Attention config
     attention_layers = cfg.model.attention.n_layers
-
+    attention_units = cfg.model.attention.n_units
+    
     # Output config
     output_layers = cfg.model.output.n_layers
+    output_units = cfg.model.output.n_units
 
     multiclass_targets = cfg.task.targets[0].get("possible_target_values")
     binary_targets = cfg.task.targets[0].get("positive_class")
@@ -48,11 +50,11 @@ def test_model(cfg: DictConfig):
         n_kernels=n_kernels, n_layers=cnn_layers)
     attention_network = AttentionNetwork(
         n_input_features=n_kernels, n_layers=attention_layers,
-        n_units=n_kernels)
+        n_units=attention_units)
     output_network = OutputNetwork(
         n_input_features=n_kernels,
         n_output_features=n_output_features,
-        n_layers=output_layers, n_units=n_kernels)
+        n_layers=output_layers, n_units=output_units)
 
     model = DeepRC(max_seq_len=13100,
                    sequence_embedding_network=sequence_embedding_network,
