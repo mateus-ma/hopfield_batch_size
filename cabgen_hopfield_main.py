@@ -5,12 +5,11 @@ from os import path, environ
 from omegaconf import DictConfig
 from deeprc.training import train, evaluate
 from src.utils.create_orf_table import create_orf_table
+from src.utils.handle_machine_learning import build_model, clear_gpu_memory
 from deeprc.task_definitions import TaskDefinition, MulticlassTarget, \
     BinaryTarget, RegressionTarget
 from deeprc.dataset_readers import make_dataloaders_stratified, \
     no_sequence_count_scaling
-from deeprc.architectures import DeepRC, SequenceEmbeddingCNN, \
-    AttentionNetwork, OutputNetwork
 
 environ["PYTORCH_CUDA_ALLOC_CONF"] = ("garbage_collection_threshold:0.8,"
                                       "max_split_size_mb:128,"
@@ -79,11 +78,11 @@ def main(cfg: DictConfig):
 
     # Size of 1D-CNN kernels (=how many sequence characters a CNN kernel
     # (spans). Default: 9.
-    kernel_size = cfg.model.kernel_size
+    # kernel_size = cfg.model.kernel_size
 
     # Number of kernels in the 1D-CNN. This is an important hyper-parameter.
     # Default: 32.
-    n_kernels = cfg.model.n_kernels
+    # n_kernels = cfg.model.n_kernels
 
     # Number of instances to reduce repertoires to during training via
     # random dropout. This should be less than the number of instances per
@@ -117,13 +116,6 @@ def main(cfg: DictConfig):
     metadata_file_id_column = cfg.data_splitting.metadata_file_id_column
     sequence_column = cfg.data_splitting.sequence_column
     sequence_counts_column = cfg.data_splitting.sequence_counts_column
-
-    # Model
-    cnn_layers = cfg.model.sequence_embedding.n_layers
-    attention_layers = cfg.model.attention.n_layers
-    attention_units = cfg.model.attention.n_units
-    output_layers = cfg.model.output.n_layers
-    output_units = cfg.model.output.n_units
 
     if create_orfs:
         create_orf_table()
@@ -168,31 +160,7 @@ def main(cfg: DictConfig):
         )
 
     # Create DeepRC Network
-
-    # Create sequence embedding network (for CNN, kernel_size and n_kernels are
-    # important hyper-parameters)
-    sequence_embedding_network = SequenceEmbeddingCNN(n_input_features=20+3,
-                                                      kernel_size=kernel_size,
-                                                      n_kernels=n_kernels,
-                                                      n_layers=cnn_layers)
-    # Create attention network
-    attention_network = AttentionNetwork(
-        n_input_features=n_kernels, n_layers=attention_layers,
-        n_units=attention_units)
-    # Create output network
-    output_network = OutputNetwork(
-        n_input_features=n_kernels,
-        n_output_features=task_definition.get_n_output_features(),
-        n_layers=output_layers, n_units=output_units)
-    # Combine networks to DeepRC network
-    model = DeepRC(max_seq_len=13500,
-                   sequence_embedding_network=sequence_embedding_network,
-                   attention_network=attention_network,
-                   output_network=output_network,
-                   consider_seq_counts=False, n_input_features=20,
-                   add_positional_information=True,
-                   sequence_reduction_fraction=0.1, reduction_mb_size=int(5e4),
-                   device=device).to(device=device)
+    model = build_model(cfg)
 
     # Train DeepRC model
     train(model, task_definition=task_definition,
@@ -205,11 +173,13 @@ def main(cfg: DictConfig):
           n_updates=n_updates, evaluate_at=evaluate_at,
           # Here our results and trained models will be stored
           device=device, results_directory=results_directory
-          )
+          )  # type: ignore
 
     scores = evaluate(model=model, dataloader=testset_eval,
                       task_definition=task_definition, device=device)
     print(f"Test scores:\n{scores}")
+
+    clear_gpu_memory()
 
 
 if __name__ == "__main__":
