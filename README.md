@@ -154,6 +154,26 @@ O script `model_prediction.py` gera, por padrão, uma tabela com os valores de p
 
 ---
 
+## 5 Fold Cross Validation
+
+### Script `fold_cross_validation.py`
+
+O script `fold_cross_validation.py` executa, por padrão, a validação cruzada para medir a estabilidade das métricas do modelo. Ele divide o conjunto de dados em 5 subgrupos e treina 5 modelos variando o subconjunto de teste/validação. Além disso, outros parâmetros podem ser ajustados conforme necessário, basta verificar quais são utilizados pelo script e sobrescrevê-los diretamente na linha de comando.
+
+1. Executar a validação com as configurações padrão:
+
+   ```bash
+   python3 fold_cross_validation.py
+   ```
+
+2. Executar a validação com um kernel_size de 48 e n_updates de 10.000:
+
+   ```bash
+   python3 model_prediction.py model.kernel_size=48 training.n_updates=10000
+   ```
+
+---
+
 ## Estrutura do Modelo
 
 1. **Divisão dos Dados**:  
