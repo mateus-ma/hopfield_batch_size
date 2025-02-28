@@ -11,11 +11,33 @@ from deeprc.dataset_readers import RepertoireDataset, no_stack_collate_fn, \
 
 
 def process_json(json_file: str) -> List[List[Union[str, int]]]:
+    """
+    Reads a JSON file and extracts specific genomic features.
+
+    This function processes a JSON file containing genomic data and extracts
+    relevant information such as locus, type, product, and nucleotide sequence.
+    Additionally, it counts the occurrences of each unique sequence.
+
+    Args:
+        json_file (str): Path to the JSON file.
+
+    Returns:
+        List[List[Union[str, int]]]: A list of lists where each sublist
+        contains:
+            - locus (str)
+            - feature type (str)
+            - product (str)
+            - nucleotide sequence (str)
+            - sequence count (int)
+    """
+    # Read JSON data
     data = hf.read_json(json_file)
     features = data.get("features", [])
 
     sequences = []
     rows = []
+
+    # Extract relevant information from each feature
     for feature in features:
         locus = feature.get("locus", "")
         seq_type = feature.get("type", "")
@@ -27,7 +49,10 @@ def process_json(json_file: str) -> List[List[Union[str, int]]]:
         row = [locus, seq_type, product, sequence]
         rows.append(row)
 
+    # Count occurrences of each unique sequence
     seq_counter = Counter(sequences)
+
+    # Append sequence count to each row
     for row in rows:
         seq_counting = seq_counter.get(row[3])
         row.append(seq_counting)
@@ -36,10 +61,28 @@ def process_json(json_file: str) -> List[List[Union[str, int]]]:
 
 
 def process_tsv(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Processes a TSV-formatted DataFrame by selecting and renaming specific
+    columns.
+
+    This function extracts the "sequence" and "count" columns from the given
+    DataFrame,
+    renaming them to "orf" and "templates", respectively.
+
+    Args:
+        df (pd.DataFrame): Input DataFrame containing at least "sequence" and
+        "count" columns.
+
+    Returns:
+        pd.DataFrame: Processed DataFrame with renamed columns.
+    """
+    # Mapping original column names to new names
     columns = {"sequence": "orf", "count": "templates"}
 
+    # Select and rename specified columns
     selected_df = df[["sequence", "count"]].copy()
     selected_df.rename(columns=columns, inplace=True)  # type: ignore
+
     return selected_df  # type: ignore
 
 
@@ -131,9 +174,57 @@ def make_full_dataloader(
 
 
 def get_datetime() -> str:
-    return datetime.now().strftime("%Y_%m_%d_%H_%M")
+    """
+    Generates a timestamp string with the current date and time.
+
+    The format used is: YYYY_MM_DD_HH_MM_SS.
+
+    Returns:
+        str: The formatted timestamp.
+    """
+    return datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
 
 
 def insert_datetime_into_filename(filename: str) -> str:
-    return (f"{filename.split('.')[0]}_{get_datetime()}."
-            f"{filename.split('.')[-1]}")
+    """
+    Inserts a timestamp into a filename before the file extension.
+
+    Example:
+        Input: "results.csv"
+        Output: "results_2025_02_28_14_30_00.csv"
+
+    Args:
+        filename (str): The original filename.
+
+    Returns:
+        str: The filename with the timestamp inserted.
+    """
+    # Split the filename to extract the name and extension
+    name, extension = filename.rsplit(".", 1)
+
+    # Append the timestamp before the extension
+    return f"{name}_{get_datetime()}.{extension}"
+
+
+def calculate_accuracy(df: pd.DataFrame) -> float:
+    """
+    Calculates the accuracy of predictions based on the given dataframe.
+
+    Accuracy is computed as the proportion of correctly predicted labels.
+
+    Args:
+        df (pd.DataFrame): Dataframe containing the columns 'Prediction' and
+        'Label'.
+
+    Returns:
+        float: The accuracy score (between 0 and 1).
+    """
+    if "Prediction" not in df.columns or "Label" not in df.columns:
+        raise ValueError("The dataframe must contain 'Prediction' and 'Label' "
+                         "columns.")
+
+    correct_predictions = (df["Prediction"] == df["Label"]).sum()
+    total_samples = len(df)
+
+    return float(correct_predictions / total_samples) if total_samples > 0 \
+        else 0.0
