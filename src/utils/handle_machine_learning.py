@@ -31,6 +31,8 @@ def build_model(cfg: DictConfig) -> DeepRC:
     attention_layers = cfg.model.attention.n_layers
     # Number of attention units per layer
     attention_units = cfg.model.attention.n_units
+    # Number of attention heads
+    attention_heads = cfg.model.attention.n_heads
 
     # Output network configuration
     # Number of fully connected layers
@@ -65,7 +67,8 @@ def build_model(cfg: DictConfig) -> DeepRC:
     attention_network = AttentionNetwork(
         n_input_features=n_kernels,  # Output from CNN
         n_layers=attention_layers,
-        n_units=attention_units
+        n_units=attention_units,
+        n_heads=attention_heads
     )
 
     # Define the output network responsible for final classification
