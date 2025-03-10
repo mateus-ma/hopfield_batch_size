@@ -42,12 +42,13 @@ def process_json(json_file: str) -> List[List[Union[str, int]]]:
         locus = feature.get("locus", "")
         seq_type = feature.get("type", "")
         product = feature.get("product", "")
-        sequence = feature.get("nt", "")
+        sequence = feature.get("aa", "")
 
-        sequences.append(sequence)
+        if sequence != "":
+            sequences.append(sequence)
 
-        row = [locus, seq_type, product, sequence]
-        rows.append(row)
+            row = [locus, seq_type, product, sequence]
+            rows.append(row)
 
     # Count occurrences of each unique sequence
     seq_counter = Counter(sequences)

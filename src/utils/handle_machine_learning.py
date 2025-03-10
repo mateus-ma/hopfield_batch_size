@@ -81,7 +81,7 @@ def build_model(cfg: DictConfig) -> DeepRC:
 
     # Construct the DeepRC model with the defined components
     model = DeepRC(
-        max_seq_len=13500,  # Maximum sequence length supported by the model
+        max_seq_len=5000,  # Maximum sequence length supported by the model
         sequence_embedding_network=sequence_embedding_network,
         attention_network=attention_network,
         output_network=output_network,
