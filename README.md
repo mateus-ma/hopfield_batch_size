@@ -51,7 +51,6 @@ As configurações do Hydra permitem gerenciar facilmente os parâmetros do trei
    - **`attention`**:
      - **`n_layers`**: Número de camadas na rede de atenção.
      - **`n_units`**: Número de neurônios na rede de atenção.
-     - **`n_heads`**: Número de cabeças na rede de atenção.
    - **`output`**:
      - **`n_layers`**: Número de camadas na rede de saída.
      - **`n_units`**: Número de neurônios na rede de saída.
