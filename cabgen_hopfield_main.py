@@ -93,6 +93,9 @@ def main(cfg: DictConfig):
     # Learning rate of DeepRC using Adam optimizer. Default: 1e-4.
     learning_rate = cfg.training.learning_rate
 
+    # Batch size of DeepRC. Default: 4
+    batch_size = cfg.training.batch_size
+
     # Device to use for NN computations, as passed to `torch.device()`.
     # Default: 'cuda:0'.
     device = cfg.device
@@ -151,6 +154,7 @@ def main(cfg: DictConfig):
             n_splits=5,
             stratify=stratify,
             rnd_seed=rnd_seed,
+            batch_size=batch_size,
             metadata_file_id_column=metadata_file_id_column,
             sequence_column=sequence_column,
             sequence_counts_column=sequence_counts_column,

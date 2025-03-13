@@ -8,4 +8,4 @@ requests
 tensorboard
 hydra-core
 git+https://github.com/widmi/widis-lstm-tools#egg=widis-lstm-tools
-git+https://github.com/Nickolaz47/DeepRC#egg=deeprc
+git+https://github.com/mateus-ma/DeepRC#egg=deeprc

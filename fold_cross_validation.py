@@ -41,6 +41,7 @@ def main(cfg: DictConfig):
     evaluate_at = cfg.training.evaluate_at
     sample_n_sequences = cfg.data_splitting.sample_n_sequences
     learning_rate = cfg.training.learning_rate
+    batch_size = cfg.training.batch_size
     rnd_seed = cfg.rnd_seed
     results_directory = cfg.results_directory
 
@@ -79,6 +80,7 @@ def main(cfg: DictConfig):
                 cross_validation_fold=fold_idx,
                 stratify=stratify,
                 rnd_seed=rnd_seed,
+                batch_size=batch_size,
                 metadata_file_id_column=metadata_file_id_column,
                 sequence_column=sequence_column,
                 sequence_counts_column=sequence_counts_column,
