@@ -11,5 +11,5 @@ rnd_seed: 0
 create_orfs: False
 results_directory: "results"
 database:
-  metadata_file: "database/metadata.tsv"
-  repertoiresdata_path: "database/orfs"
+  metadata_file: "database_modified/metadata.tsv"
+  repertoiresdata_path: "database_modified/orfs"
